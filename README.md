@@ -5,3 +5,4 @@ This is just a repo to implement designs I see from either [pinterest](https://w
 ## Items
 
 - [On/Off Switch](https://www.pinterest.com/pin/764837949211037023/)
+- [Readable Tab Bar](https://www.pinterest.com/pin/683421312183107348/)

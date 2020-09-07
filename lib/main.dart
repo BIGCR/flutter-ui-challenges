@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_ui_challenges/lightswitch/on_off_switch.dart';
+import 'package:flutter_ui_challenges/readabletabbar/readable_tab_bar.dart';
 
 void main() {
   runApp(MyApp());
@@ -30,19 +31,14 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text('Home'),
       ),
-      body: Center(
-        child: ListView(
-          children: [
-            ...allPages.map((e) => RoutePageTile(e))
-          ],
-        )
+      body: ListView(
+        children: [...allPages.map((e) => RoutePageTile(e))],
       ),
     );
   }
@@ -61,6 +57,11 @@ final allPages = [
     name: 'On/Off Switch',
     route: OnOffSwitch.routeName,
     builder: (context) => OnOffSwitch(),
+  ),
+  Page(
+    name: 'Readable Tab Bar',
+    route: ReadableTabBar.routeName,
+    builder: (context) => ReadableTabBar(),
   ),
 ];
 
