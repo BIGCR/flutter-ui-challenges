@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_ui_challenges/lightswitch/on_off_switch.dart';
+import 'package:flutter_ui_challenges/onboarding/animated_onboarding.dart';
 import 'package:flutter_ui_challenges/readabletabbar/readable_tab_bar.dart';
 
 void main() {
@@ -62,6 +63,11 @@ final allPages = [
     name: 'Readable Tab Bar',
     route: ReadableTabBar.routeName,
     builder: (context) => ReadableTabBar(),
+  ),
+  Page(
+    name: 'Animated Onboarding',
+    route: Onboarding.routeName,
+    builder: (context) => Onboarding(),
   ),
 ];
 
