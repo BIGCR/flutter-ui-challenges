@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_ui_challenges/cornercross/corner_cross.dart';
 import 'package:flutter_ui_challenges/lightswitch/on_off_switch.dart';
 import 'package:flutter_ui_challenges/onboarding/animated_onboarding.dart';
 import 'package:flutter_ui_challenges/readabletabbar/readable_tab_bar.dart';
+import 'package:provider/provider.dart';
 
 void main() {
   runApp(MyApp());
@@ -68,6 +70,11 @@ final allPages = [
     name: 'Animated Onboarding',
     route: Onboarding.routeName,
     builder: (context) => Onboarding(),
+  ),
+  Page(
+    name: 'Corner Cross',
+    route: CornerCross.routeName,
+    builder: (context) => CornerCross(),
   ),
 ];
 

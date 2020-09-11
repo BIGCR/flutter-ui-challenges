@@ -8,3 +8,4 @@ This is just a repo to implement designs I see from either [pinterest](https://w
 - [Readable Tab Bar](https://www.pinterest.com/pin/683421312183107348/)
 - [Onboarding screen animation](https://www.pinterest.com/pin/764837949211163578/)
     * Not Completed
+- [Fluid Tab Bar Interaction](https://www.pinterest.com/pin/764837949211163473/)
