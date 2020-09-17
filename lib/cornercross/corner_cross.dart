@@ -15,18 +15,25 @@ class CornerCross extends StatefulWidget {
 class _CornerCrossState extends State<CornerCross>
     with SingleTickerProviderStateMixin {
   AnimationController _controller;
-  Alignment _alignment = Alignment.topLeft;
-  Direction _directions = Direction.left;
+  bool isClockwise = true;
 
   @override
   void initState() {
-    _controller = AnimationController(vsync: this);
-    Future.delayed(Duration(seconds: 1), () {
-      setState(() {
-        _alignment = Alignment.topRight;
-        _directions = Direction.right;
+    _controller = AnimationController(
+      duration: Duration(milliseconds: 500, seconds: 3),
+      vsync: this,
+    )..addStatusListener((status) {
+        if (status == AnimationStatus.completed ||
+            status == AnimationStatus.dismissed) {
+          if (isClockwise) {
+            _controller.repeat();
+          } else {
+            _controller.reverse(from: 1);
+          }
+        }
       });
-    });
+
+    _controller.forward();
     super.initState();
   }
 
@@ -34,6 +41,16 @@ class _CornerCrossState extends State<CornerCross>
   void dispose() {
     _controller.dispose();
     super.dispose();
+  }
+
+  void _toggleController() {
+    if (_controller.status == AnimationStatus.forward) {
+      isClockwise = false;
+      _controller.reverse();
+    } else {
+      isClockwise = true;
+      _controller.forward();
+    }
   }
 
   @override
@@ -44,7 +61,7 @@ class _CornerCrossState extends State<CornerCross>
         title: Text('Game'),
       ),
       body: InkWell(
-        // onTap: _changeDirections,
+        onTap: _toggleController,
         child: Stack(
           alignment: Alignment.centerRight,
           children: [
@@ -95,8 +112,7 @@ class _CornerCrossState extends State<CornerCross>
                       ),
                     ),
                     PlayerParticle(
-                      alignment: _alignment,
-                      direction: _directions,
+                      controller: _controller,
                     )
                   ],
                 ),
@@ -116,21 +132,9 @@ class _CornerCrossState extends State<CornerCross>
   }
 }
 
-class PlayerParticle extends StatefulWidget {
-  final Alignment alignment;
-  final Direction direction;
-
-  const PlayerParticle({Key key, this.alignment, this.direction})
-      : super(key: key);
-
-  @override
-  _PlayerParticleState createState() => _PlayerParticleState();
-}
-
-class _PlayerParticleState extends State<PlayerParticle>
-    with SingleTickerProviderStateMixin {
-  AnimationController _controller;
-  bool isClockwise = true;
+class PlayerParticle extends AnimatedWidget {
+  PlayerParticle({Key key, AnimationController controller})
+      : super(key: key, listenable: controller);
 
   final Widget _child = Container(
     height: 20,
@@ -138,118 +142,48 @@ class _PlayerParticleState extends State<PlayerParticle>
     decoration: BoxDecoration(shape: BoxShape.circle, color: Colors.green),
   );
 
-  Animation<AlignmentGeometry> animation;
-
-  final AlignmentTween topLeftToTopRight = AlignmentTween(
-    begin: Alignment.topLeft,
-    end: Alignment.topRight,
-  );
-
-  final AlignmentTween topRightToBottomRight = AlignmentTween(
-    begin: Alignment.topRight,
-    end: Alignment.bottomRight,
-  );
-
-  final AlignmentTween bottomRightToBottomLeft = AlignmentTween(
-    begin: Alignment.bottomRight,
-    end: Alignment.bottomLeft,
-  );
-
-  final AlignmentTween bottomLeftToTopLeft = AlignmentTween(
-    begin: Alignment.bottomLeft,
-    end: Alignment.topLeft,
-  );
-
-  @override
-  void initState() {
-    _controller =
-        AnimationController(duration: Duration(milliseconds: 500, seconds: 3), vsync: this)
-          ..addStatusListener(
-            (status) {
-              if (status == AnimationStatus.completed || status == AnimationStatus.dismissed) {
-                if(isClockwise) {
-                  _controller.repeat();
-                } else {
-                  _controller.reverse(from: 1);
-                }
-              }
-            },
-          );
-
-    final sequenceItmes = <TweenSequenceItem<AlignmentGeometry>>[];
-
-    sequenceItmes.add(
-      TweenSequenceItem<AlignmentGeometry>(
-        tween: topLeftToTopRight,
-        weight: 1 / 4,
+  final List<TweenSequenceItem<AlignmentGeometry>> sequenceItems = [
+    TweenSequenceItem<AlignmentGeometry>(
+      tween: AlignmentTween(
+        begin: Alignment.topLeft,
+        end: Alignment.topRight,
       ),
-    );
-
-    sequenceItmes.add(
-      TweenSequenceItem<AlignmentGeometry>(
-        tween: topRightToBottomRight,
-        weight: 1 / 4,
+      weight: 1 / 4,
+    ),
+    TweenSequenceItem<AlignmentGeometry>(
+      tween: AlignmentTween(
+        begin: Alignment.topRight,
+        end: Alignment.bottomRight,
       ),
-    );
-
-    sequenceItmes.add(
-      TweenSequenceItem<AlignmentGeometry>(
-        tween: bottomRightToBottomLeft,
-        weight: 1 / 4,
+      weight: 1 / 4,
+    ),
+    TweenSequenceItem<AlignmentGeometry>(
+      tween: AlignmentTween(
+        begin: Alignment.bottomRight,
+        end: Alignment.bottomLeft,
       ),
-    );
-
-    sequenceItmes.add(
-      TweenSequenceItem<AlignmentGeometry>(
-        tween: bottomLeftToTopLeft,
-        weight: 1 / 4,
+      weight: 1 / 4,
+    ),
+    TweenSequenceItem<AlignmentGeometry>(
+      tween: AlignmentTween(
+        begin: Alignment.bottomLeft,
+        end: Alignment.topLeft,
       ),
-    );
+      weight: 1 / 4,
+    ),
+  ];
 
-    animation = TweenSequence<AlignmentGeometry>(sequenceItmes).animate(_controller);
-    _controller.forward();
-    super.initState();
-  }
-
-  @override
-  void dispose() {
-    _controller.dispose();
-    super.dispose();
-  }
-
-  void _toggleController() {
-    if(_controller.status == AnimationStatus.forward) {
-      isClockwise = false;
-      _controller.reverse();
-    } else {
-      isClockwise = true;
-      _controller.forward();
-    }
-  }
+  Animation<AlignmentGeometry> get animation =>
+      TweenSequence<AlignmentGeometry>(sequenceItems).animate(listenable);
 
   @override
   Widget build(BuildContext context) {
-    return LayoutBuilder(
-      builder: (context, constraints) {
-        var width = constraints.biggest.width;
-
-        return Stack(
-          children: [
-            InkWell(
-              onTap: _toggleController,
-              child: Container(
-              ),
-            ),
-            AnimatedBuilder(
-              animation: animation,
-              builder: (context, child) {
-                return Align(
-                  alignment: animation.value,
-                  child: _child,
-                );
-              },
-            )
-          ],
+    return AnimatedBuilder(
+      animation: animation,
+      builder: (context, child) {
+        return Align(
+          alignment: animation.value,
+          child: _child,
         );
       },
     );
