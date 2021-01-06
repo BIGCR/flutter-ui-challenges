@@ -1,5 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_ui_challenges/url_util.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class OnOffSwitch extends StatefulWidget {
   static final routeName = '/on-off-switch';
@@ -23,6 +26,11 @@ class _OnOffSwitchState extends State<OnOffSwitch> {
           backgroundColor: Colors.transparent,
           shadowColor: Colors.transparent,
           iconTheme: isOn ? IconThemeData(color: Colors.black) : null,
+          actions: [
+            IconButton(icon: FaIcon(FontAwesomeIcons.pinterest), onPressed: () {
+              UrlUtil.launchURL('https://www.pinterest.com/pin/764837949211037023/');
+            })
+          ],
         ),
         body: Center(
           child: Container(
@@ -77,7 +85,7 @@ class _OnOffSwitchState extends State<OnOffSwitch> {
                   duration: Duration(milliseconds: 50),
                   right: 25,
                   top: 0 - kToolbarHeight - MediaQuery.of(context).padding.top,
-                  bottom: isOn ? height * .45 : height * .30,
+                  bottom: isOn ? (height * .50 - 50) : (height * .50 - 150),
                   width: 2,
                   // height: height,
                   child: Container(

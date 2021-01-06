@@ -38,7 +38,7 @@ class _HomeState extends State<Home> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Home'),
+        title: Text('Flutter UI Challenges'),
       ),
       body: ListView(
         children: [...allPages.map((e) => RoutePageTile(e))],

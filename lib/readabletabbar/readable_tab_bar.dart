@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:outline_material_icons/outline_material_icons.dart';
+
+import '../url_util.dart';
 
 class TabItem {
   final String title;
@@ -84,6 +87,14 @@ class _ReadableTabBarState extends State<ReadableTabBar>
     return Scaffold(
       appBar: AppBar(
         title: Text('Readable Tabs Demo'),
+        actions: [
+          IconButton(
+              icon: FaIcon(FontAwesomeIcons.pinterest),
+              onPressed: () {
+                UrlUtil.launchURL(
+                    'https://www.pinterest.com/pin/764837949211163312/');
+              })
+        ],
       ),
       body: SafeArea(
         child: Column(

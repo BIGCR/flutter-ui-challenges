@@ -2,6 +2,9 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+
+import '../url_util.dart';
 
 enum Direction { left, right, up, down }
 
@@ -59,9 +62,15 @@ class _CornerCrossState extends State<CornerCross>
     return Scaffold(
       appBar: AppBar(
         title: Text('Game'),
+        actions: [
+          IconButton(icon: FaIcon(FontAwesomeIcons.pinterest), onPressed: () {
+            UrlUtil.launchURL('https://www.pinterest.com/pin/764837949211222549/');
+          })
+        ],
       ),
       body: InkWell(
         onTap: _toggleController,
+        enableFeedback: false,
         child: Stack(
           alignment: Alignment.centerRight,
           children: [
@@ -180,10 +189,16 @@ class PlayerParticle extends AnimatedWidget {
   Widget build(BuildContext context) {
     return AnimatedBuilder(
       animation: animation,
-      builder: (context, child) {
-        return Align(
-          alignment: animation.value,
-          child: _child,
+      child: Container(
+        height: 20,
+        width: 20,
+        decoration: BoxDecoration(shape: BoxShape.circle, color: Colors.green),
+      ),
+      builder: (context, Widget child) {
+        // print('Position ${this}');
+        return AlignTransition(
+          alignment: animation,
+          child: child,
         );
       },
     );

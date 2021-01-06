@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+
+import '../url_util.dart';
 
 class Onboarding extends StatefulWidget {
   static final String routeName = '/onboarding';
@@ -62,6 +65,15 @@ class _OnboardingState extends State<Onboarding> {
     return Container(
       decoration: _getBackgroundGradient(),
       child: Scaffold(
+        appBar: AppBar(
+          backgroundColor: Colors.transparent,
+          shadowColor: Colors.transparent,
+          actions: [
+            IconButton(icon: FaIcon(FontAwesomeIcons.pinterest), onPressed: () {
+              UrlUtil.launchURL('https://www.pinterest.com/pin/764837949211163578/');
+            })
+          ],
+        ),
         backgroundColor: Colors.transparent,
         body: Stack(children: [
           PageView(
